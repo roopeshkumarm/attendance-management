@@ -22,6 +22,7 @@ function AddNewStudent({ onAddStudent }) {
   } = useForm();
 
   const onSubmit = (data) => {
+    console.log(data);
     setLoading(true);
     onAddStudent(data);
     setLoading(false);
@@ -56,7 +57,7 @@ function AddNewStudent({ onAddStudent }) {
                 <div className='py-3'>
                   <label className=''>Department</label>
                   <Input
-                    {...register('department', { required: true })}
+                    {...register('dept', { required: true })}
                     placeholder='Ex. CSE'
                   />
                 </div>

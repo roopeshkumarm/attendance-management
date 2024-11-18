@@ -1,9 +1,8 @@
-import Image from "next/image";
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <div >
-      
-    </div>
-  );
+export default function Page() {
+  // Redirect users to the dashboard route
+  redirect('/dashboard');
+
+  return null; 
 }

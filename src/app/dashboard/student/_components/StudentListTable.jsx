@@ -14,10 +14,10 @@ function StudentListTable({ studentList, onDeleteStudent }) {
   );
 
   const columnDefs = [
-    { field: 'id', headerName: 'ID', filter: true },
+    { field: 'id', headerName: 'ID', filter: false },
     { field: 'name', headerName: 'Name', filter: true },
     { field: 'year', headerName: 'Year', filter: true },
-    { field: 'department', headerName: 'Department', filter: true },
+    { field: 'dept', headerName: 'Department', filter: true },
     { field: 'action', headerName: 'Action', cellRenderer: CustomButton },
   ];
 
