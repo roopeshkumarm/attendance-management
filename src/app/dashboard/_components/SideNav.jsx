@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import Image from 'next/image';
-import { GraduationCapIcon, Hand, LayoutIcon, Settings } from 'lucide-react';
+import { GraduationCapIcon, Hand, LayoutIcon, PenBoxIcon, Settings } from 'lucide-react';
 import Link from 'next/link';
 
 
@@ -28,9 +28,9 @@ function SideNav() {
     },
     {
       id: 4,
-      name: 'Settings',
-      icon: <Settings />,
-      path: '/dashboard/settings',
+      name: 'Daily Record',
+      icon: <PenBoxIcon />,
+      path: '/dashboard/dailyrecord',
     },
   ];
 
