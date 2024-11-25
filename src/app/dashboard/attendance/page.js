@@ -1,19 +1,34 @@
 'use client'
 import React, { useState } from 'react';
-import MonthSelection from '@/app/_components/MonthSelection';
 import { Button } from '@/components/ui/button';
 import AttendanceGrid from './_components/AttendanceGrid';
 
 function Attendance() {
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const monthsMap = {
+    1: "January",
+    2: "February",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December",
+  };
+
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // Default to current month
+  const [searchedMonth, setSearchedMonth] = useState(null); // Tracks the month to render in the grid
+
+  const handleMonthChange = (event) => {
+    const newMonth = parseInt(event.target.value, 10); // Ensure value is converted to a number
+    setSelectedMonth(newMonth); // Update selected month immediately
+  };
 
   const onSearchHandler = () => {
-    if (selectedMonth) {
-      console.log('Selected month:', selectedMonth);
-      // Additional logic for searching or fetching data goes here
-    } else {
-      console.log('Please select a month.');
-    }
+    setSearchedMonth(selectedMonth); // Update the searched month to trigger re-render
   };
 
   return (
@@ -21,11 +36,25 @@ function Attendance() {
       <h2 className='text-2xl font-bold'>Attendance</h2>
       <div className='flex gap-5 my-5 p-5 border rounded-lg shadow-sm'>
         <div className='flex gap-2 items-center'>
-          <MonthSelection onSelectMonth={setSelectedMonth} />
+          <div>
+            <select
+              value={selectedMonth}
+              onChange={handleMonthChange}
+              className="p-2 border border-gray-300 rounded-md"
+            >
+              {Object.keys(monthsMap).map((monthKey) => (
+                <option key={monthKey} value={monthKey}>
+                  {monthsMap[monthKey]}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <Button onClick={onSearchHandler}>Search</Button>
       </div>
-      <AttendanceGrid />
+      {searchedMonth && (
+        <AttendanceGrid selectedMonth={searchedMonth} />
+      )}
     </div>
   );
 }

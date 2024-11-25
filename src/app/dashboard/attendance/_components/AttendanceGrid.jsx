@@ -5,13 +5,30 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { supabase } from "@/config/supabase";
 
-function AttendanceGrid() {
+function AttendanceGrid({ selectedMonth }) {
   const [rowData, setRowData] = useState([]);
   const [colDefs, setColDefs] = useState([]);
 
+  const monthsMap = {
+    1: 31,    // January
+    2: 28,    // February
+    3: 31,    // March
+    4: 30,    // April
+    5: 31,    // May
+    6: 30,    // June
+    7: 31,    // July
+    8: 31,    // August
+    9: 30,    // September
+    10: 31,   // October
+    11: 30,   // November
+    12: 31,   // December
+  };
+   
+  
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching data...");
+      console.log("Fetching data for month:", selectedMonth);
+
       const { data: students, error: studentsError } = await supabase
         .from("students")
         .select("*");
@@ -31,15 +48,14 @@ function AttendanceGrid() {
       }
 
       const today = new Date();
-      const currentDate = today.getDate(); // Get today's date (1-31)
 
       const formattedRowData = students.map((student) => {
-        const studentAttendance = Array.from({ length: currentDate }, (_, i) => {
+        const studentAttendance = Array.from({ length: 31 }, (_, i) => {
           const day = i + 1;
           const attendanceRecord = attendance.find(
             (record) =>
               record.s_id === student.id &&
-              record.date === `2024-11-${String(day).padStart(2, "0")}`
+              record.date === `2024-${String(selectedMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`
           );
           return attendanceRecord ? true : false;
         });
@@ -57,24 +73,26 @@ function AttendanceGrid() {
     };
 
     fetchData();
-  }, []);
-
+  
+  }, [selectedMonth]); // Refetch data when selectedMonth changes
   const colDefsMemo = useMemo(() => {
     const today = new Date();
-    const currentDate = today.getDate(); // Get today's date (1-31)
-
+    console.log(selectedMonth)
+    console.log(monthsMap[selectedMonth])
     const staticCols = [
       { field: "id", headerName: "ID", pinned: "left" },
       { field: "name", headerName: "Name", pinned: "left" },
     ];
 
-    const dayCols = Array.from({ length: currentDate }, (_, i) => ({
+    const dayCols = Array.from({ length: monthsMap[selectedMonth]}, (_, i) => ({
       field: `${i + 1}`,
       headerName: `${i + 1}`,
       cellRenderer: (params) => (params.value ? "❌" : "✔"),
       editable: true,
       width: 100,
     }));
+    
+
 
     return [...staticCols, ...dayCols];
   }, []);
@@ -87,7 +105,7 @@ function AttendanceGrid() {
     const { data, colDef, newValue } = params;
     const studentId = data.id;
     const day = colDef.field;
-    const date = `2024-11-${String(day).padStart(2, "0")}`;
+    const date = `2024-${String(selectedMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
     try {
       const { error } = await supabase
