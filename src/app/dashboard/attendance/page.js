@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import AttendanceGrid from './_components/AttendanceGrid';
 
-function Attendance() {
+function Attendance() {``
   const monthsMap = {
     1: "January",
     2: "February",

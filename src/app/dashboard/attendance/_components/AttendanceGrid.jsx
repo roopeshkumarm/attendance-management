@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
@@ -10,25 +9,12 @@ function AttendanceGrid({ selectedMonth }) {
   const [colDefs, setColDefs] = useState([]);
 
   const monthsMap = {
-    1: 31,    // January
-    2: 28,    // February
-    3: 31,    // March
-    4: 30,    // April
-    5: 31,    // May
-    6: 30,    // June
-    7: 31,    // July
-    8: 31,    // August
-    9: 30,    // September
-    10: 31,   // October
-    11: 30,   // November
-    12: 31,   // December
+    1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
+    7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
   };
-   
-  
+
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching data for month:", selectedMonth);
-
       const { data: students, error: studentsError } = await supabase
         .from("students")
         .select("*");
@@ -47,17 +33,17 @@ function AttendanceGrid({ selectedMonth }) {
         return;
       }
 
-      const today = new Date();
-
       const formattedRowData = students.map((student) => {
-        const studentAttendance = Array.from({ length: 31 }, (_, i) => {
+        const studentAttendance = Array.from({ length: monthsMap[selectedMonth] }, (_, i) => {
           const day = i + 1;
           const attendanceRecord = attendance.find(
             (record) =>
               record.s_id === student.id &&
               record.date === `2024-${String(selectedMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`
           );
-          return attendanceRecord ? true : false;
+
+          // Key change: Mark with cross if data is available
+          return attendanceRecord ? false : null;
         });
 
         return {
@@ -69,33 +55,38 @@ function AttendanceGrid({ selectedMonth }) {
       });
 
       setRowData(formattedRowData);
-      console.log("Row data set:", formattedRowData);
     };
 
     fetchData();
-  
-  }, [selectedMonth]); // Refetch data when selectedMonth changes
+  }, [selectedMonth]);
+
   const colDefsMemo = useMemo(() => {
-    const today = new Date();
-    console.log(selectedMonth)
-    console.log(monthsMap[selectedMonth])
     const staticCols = [
       { field: "id", headerName: "ID", pinned: "left" },
       { field: "name", headerName: "Name", pinned: "left" },
     ];
 
-    const dayCols = Array.from({ length: monthsMap[selectedMonth]}, (_, i) => ({
+    const M = new Date().getMonth() + 1;
+    const d = new Date().getDate();
+    let S;
+    if(M > selectedMonth) S = monthsMap[selectedMonth];
+    else if(M === selectedMonth) S = d;
+    else S = 0;
+    const dayCols = Array.from({ length: S }, (_, i) => ({
       field: `${i + 1}`,
       headerName: `${i + 1}`,
-      cellRenderer: (params) => (params.value ? "❌" : "✔"),
+      cellRenderer: (params) => {
+        if (params.value === null) {
+          return '✔'; // Empty cell for no data
+        }
+        return params.value === false ? "❌" : "✔"; // ❌ for data present, ✔ for no data
+      },
       editable: true,
       width: 100,
     }));
-    
-
 
     return [...staticCols, ...dayCols];
-  }, []);
+  }, [selectedMonth]);
 
   useEffect(() => {
     setColDefs(colDefsMemo);
@@ -114,18 +105,16 @@ function AttendanceGrid({ selectedMonth }) {
           {
             student_id: studentId,
             date,
-            attendance: !!newValue,
+            attendance: !(newValue === false), // Invert logic for attendance
           },
         ]);
 
       if (error) {
         console.error("Error updating attendance:", error.message);
-      } else {
-        console.log(`Attendance for student ${studentId} on day ${day} updated`);
       }
 
       const updatedRowData = rowData.map((row) =>
-        row.id === studentId ? { ...row, [day]: !!newValue } : row
+        row.id === studentId ? { ...row, [day]: newValue } : row
       );
       setRowData(updatedRowData);
     } catch (error) {
