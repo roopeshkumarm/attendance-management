@@ -30,7 +30,9 @@
     "react-select": "^5.8.3",
     "sonner": "^1.7.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
   },
   "devDependencies": {
     "postcss": "^8",

@@ -6,7 +6,7 @@ function Dashboard( ) {
   return (
     <div className='p-4 shadow-sm border flex justify-between '> 
       <div>
-        
+        coming soon...
       </div>
       <div>
         
