@@ -1,6 +1,5 @@
 import { supabase } from "@/config/supabase";
 
-// Add a new student to the 'students' table
 export const addStudent = async (student) => {
   const { data, error } = await supabase
     .from("students")
@@ -16,7 +15,6 @@ export const addStudent = async (student) => {
   return data;
 };
 
-// Get all students from the 'students' table
 export const getStudents = async () => {
   const { data, error } = await supabase.from("students").select("*");
 
@@ -24,7 +22,6 @@ export const getStudents = async () => {
   return data;
 };
 
-// Delete a student by ID
 export const deleteStudent = async (id) => {
   const { data, error } = await supabase
     .from("students")
@@ -35,7 +32,6 @@ export const deleteStudent = async (id) => {
   return data;
 };
 
-// Add attendance record
 export const AddAttendance = async (s_id, month, date) => {
   const { data, error } = await supabase
     .from("attendance")
@@ -51,12 +47,11 @@ export const AddAttendance = async (s_id, month, date) => {
   return data;
 };
 
-// Check if attendance exists for today
 export const checkAttendanceForToday = async () => {
-  const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  const today = new Date().toISOString().split("T")[0]; 
   const { data, error } = await supabase
     .from("attendance")
-    .select("a_id") // Use the correct primary key column
+    .select("a_id")
     .eq("date", today);
 
   if (error) {

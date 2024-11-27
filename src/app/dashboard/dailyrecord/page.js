@@ -1,8 +1,8 @@
-'use client'; // Add this line to mark the component as a client component
+'use client'; 
 
 import React, { useState, useEffect } from "react";
 import { getStudents, AddAttendance, checkAttendanceForToday } from "@/lib/supabaseHelper";
-import Record from "./_components/Record";
+import Record from "@/app/dashboard/dailyrecord/_components/Record";
 import { Button } from "@/components/ui/button";
 
 function DailyRecord() {

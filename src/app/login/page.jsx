@@ -18,7 +18,7 @@ const LoginPage = () => {
     }, []);
 
     const handleSuccess = () => {
-        router.push('/dashboard');
+        router.push('/dashboard/student');
     };
 
     const handleSubmit = (e) => {

@@ -19,16 +19,16 @@ function Attendance() {``
     12: "December",
   };
 
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // Default to current month
-  const [searchedMonth, setSearchedMonth] = useState(null); // Tracks the month to render in the grid
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [searchedMonth, setSearchedMonth] = useState(null); 
 
   const handleMonthChange = (event) => {
-    const newMonth = parseInt(event.target.value, 10); // Ensure value is converted to a number
-    setSelectedMonth(newMonth); // Update selected month immediately
+    const newMonth = parseInt(event.target.value, 10); 
+    setSelectedMonth(newMonth); 
   };
 
   const onSearchHandler = () => {
-    setSearchedMonth(selectedMonth); // Update the searched month to trigger re-render
+    setSearchedMonth(selectedMonth);
   };
 
   return (

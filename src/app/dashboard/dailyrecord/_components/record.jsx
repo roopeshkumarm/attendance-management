@@ -21,8 +21,8 @@ function Record({ attendees, handleAttendanceChange, attendanceLocked }) {
                 <input
                   type="checkbox"
                   checked={attendee.isPresent}
-                  disabled={attendanceLocked} // Controlled by attendanceLocked
-                  onChange={() => handleAttendanceChange(attendee.id)} // Ensure this triggers updates
+                  disabled={attendanceLocked} 
+                  onChange={() => handleAttendanceChange(attendee.id)} 
                   className={`form-checkbox h-5 w-5 text-green-500 ${
                     attendanceLocked ? "cursor-not-allowed" : "cursor-pointer"
                   }`}
@@ -33,6 +33,7 @@ function Record({ attendees, handleAttendanceChange, attendanceLocked }) {
         </tbody>
       </table>
     </div>
+    
   );
 }
 

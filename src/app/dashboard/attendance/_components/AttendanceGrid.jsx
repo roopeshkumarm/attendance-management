@@ -42,7 +42,6 @@ function AttendanceGrid({ selectedMonth }) {
               record.date === `2024-${String(selectedMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`
           );
 
-          // Key change: Mark with cross if data is available
           return attendanceRecord ? false : null;
         });
 
@@ -77,9 +76,9 @@ function AttendanceGrid({ selectedMonth }) {
       headerName: `${i + 1}`,
       cellRenderer: (params) => {
         if (params.value === null) {
-          return '✔'; // Empty cell for no data
+          return '✔'; 
         }
-        return params.value === false ? "❌" : "✔"; // ❌ for data present, ✔ for no data
+        return params.value === false ? "❌" : "✔"; 
       },
       editable: true,
       width: 100,
@@ -105,7 +104,7 @@ function AttendanceGrid({ selectedMonth }) {
           {
             student_id: studentId,
             date,
-            attendance: !(newValue === false), // Invert logic for attendance
+            attendance: !(newValue === false), 
           },
         ]);
 
