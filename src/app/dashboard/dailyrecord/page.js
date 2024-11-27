@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { getStudents, AddAttendance, checkAttendanceForToday } from "@/lib/supabaseHelper";
-import Record from "@/app/dashboard/dailyrecord/_components/Record";
+import Record from "@/app/dashboard/dailyrecord/_components/record";
 import { Button } from "@/components/ui/button";
 
 function DailyRecord() {
