@@ -24,7 +24,7 @@ const SignupPage = () => {
         e.preventDefault();
         signup(formData.email, formData.password)
             .then(() => {
-                router.push('/login'); // Redirect to login on success
+                router.push('/login');
             })
             .catch((error) => {
                 if (error.message.includes('already registered')) {
@@ -36,7 +36,7 @@ const SignupPage = () => {
     };
 
     const redirectToLogin = () => {
-        router.push('/login'); // Navigate to login page
+        router.push('/login'); 
     };
 
     return (

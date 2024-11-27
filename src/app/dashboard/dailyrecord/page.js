@@ -9,6 +9,7 @@ function DailyRecord() {
   const [attendees, setAttendees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [attendanceLocked, setAttendanceLocked] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +36,7 @@ function DailyRecord() {
   }, []);
 
   const handleUpdate = async () => {
+    setSubmitting(true); 
     const currentDate = new Date();
     const today = currentDate.toISOString().split("T")[0];
     const month = currentDate.getMonth() + 1;
@@ -49,6 +51,8 @@ function DailyRecord() {
       console.log("Attendance updated and locked for today.");
     } catch (error) {
       console.error("Error updating attendance:", error.message);
+    } finally {
+      setSubmitting(false); 
     }
   };
 
@@ -68,19 +72,27 @@ function DailyRecord() {
 
   return (
     <div className="p-4 border rounded-lg shadow-sm">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">
-          Daily Record ({new Date().toLocaleDateString()})
-        </h2>
-        <Button onClick={handleUpdate} disabled={attendanceLocked}>
-          {attendanceLocked ? "Attendance Submitted" : "Submit"}
-        </Button>
-      </div>
-      <Record
-        attendees={attendees}
-        handleAttendanceChange={handleAttendanceChange}
-        attendanceLocked={attendanceLocked}
-      />
+      {submitting ? (
+        <div className="flex items-center justify-center min-h-[200px] text-lg font-semibold">
+          Submitting Attendance...
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">
+              Daily Record ({new Date().toLocaleDateString()})
+            </h2>
+            <Button onClick={handleUpdate} disabled={attendanceLocked}>
+              {attendanceLocked ? "Attendance Submitted" : "Submit"}
+            </Button>
+          </div>
+          <Record
+            attendees={attendees}
+            handleAttendanceChange={handleAttendanceChange}
+            attendanceLocked={attendanceLocked}
+          />
+        </>
+      )}
     </div>
   );
 }
